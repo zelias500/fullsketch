@@ -3,6 +3,7 @@ var router = require('express').Router();
 module.exports = router;
 
 router.use('/members', require('./members'));
+router.use('/wordlists', require('./wordlists'));
 
 // Make sure this is after all of
 // the registered routes!

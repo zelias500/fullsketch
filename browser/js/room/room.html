@@ -1,0 +1,37 @@
+<div class="anim-fade">
+    <div class='container'>
+        <div class='row wrapper' scroll-glue>
+            <div id='roomInfo' class='col-sm-2 roomBox'>
+                <p ng-repeat='player in roomData.players'><span>{{player.name}}</span><span class='pull-right'>{{player.points}}</span></p>
+            </div>
+
+            <div id='gameArea' class='col-sm-8 roomBox'>
+                <div pw-canvas options='{width: 780, height: 361, color:currentColor, undo:true}' version="canvasVersion"></div>
+                <div id='gameButtons' class='row'>
+                    <span class='col-sm-2'>{{wordState}}{{currentWord}}</span>
+                    <div class='col-sm-7'>
+                        <ul class="pwColorSelector">
+                            <li ng-repeat="color in colorList track by $index"
+                                class="pwColor"
+                                ng-class="{'active': (currentColor === color)}"
+                                ng-style="{'background-color':color}"
+                          ng-click="setColor(color)"></li>
+                        </ul>
+                        <button class='btn btn-danger' ng-click='clearCanvas()'>CLEAR</button>
+                    </div>
+                    <span class='col-sm-3'>{{timeState}}{{timer}}</span>
+                </div>
+            </div>
+
+            <div id='guessArea' class='col-sm-2 roomBox' scroll-glue>
+                <p ng-repeat='guess in guesses track by $index'>{{guess}}</p>
+                <div id='guessHere'>
+                    <form name='guessBox' ng-submit='makeGuess(theGuess)'>
+                        <input class='form-control' type='text' ng-model='theGuess' />
+                        <button class='btn btn-success' type='submit'>SUBMIT GUESS</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

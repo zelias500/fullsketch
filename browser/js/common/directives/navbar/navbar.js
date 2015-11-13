@@ -5,11 +5,12 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         scope: {},
         templateUrl: 'js/common/directives/navbar/navbar.html',
         link: function (scope) {
+            scope.username = $rootScope.username;
 
             scope.items = [
-                { label: 'Home', state: 'home' },
+                { label: 'Lobby', state: 'home' },
                 { label: 'About', state: 'about' },
-                { label: 'Documentation', state: 'docs' },
+                { label: 'Leaderboard', state: 'leaderboard' },
                 { label: 'Members Only', state: 'membersOnly', auth: true }
             ];
 

@@ -10,3 +10,24 @@
   }
 }
 
+#lobbyList {
+	border: 1px solid black
+}
+
+#lobbyDetails {
+	border: 1px solid black
+}
+
+.roomDetails span {
+	display: block;
+	margin:10px;
+}
+
+.roomList span {
+	display: block;
+	margin:10px;
+}
+
+.active {
+	background-color: salmon;
+}

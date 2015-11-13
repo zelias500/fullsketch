@@ -1,4 +1,35 @@
-<section id="home">
-    <fullstack-logo></fullstack-logo>
-    <rando-greeting></rando-greeting>
+<section id="home" class="anim-slide-left">
+    <div class='container'>
+    	<div class='row'>
+		    <div id="lobbyList" class="col-md-4 roomList">
+		    	<button class='btn btn-info' ng-click='createLobby=true'>Create New Room</button>
+		    	<span ng-repeat='room in rooms' ng-class='{"active": selectedRoom == room}'ng-click='showRoomDetails(room)'>{{room.name}}</span>
+		    </div>
+
+		    <div id="lobbyDetails" class="col-md-8">
+		    	<div ng-show='createLobby'>
+		    		<form class='roomDetails' name='roomCreator' ng-submit='createRoom()'>
+		    			<span>Name: <input type='text' ng-model='newRoom.name' /></span>
+		    			<span>Max Players: <input type='number' min='0' ng-model='newRoom.maxPlayers' /></span>
+		    			<span>Wordlist: <select ng-options="wordlist.title for wordlist in wordlists track by wordlist._id" ng-model="newRoom.wordlist">
+		    			</select></span>
+		    			<span>Number of rounds: <input ng-model="newRoom.numRounds"type='number' min='0' /></span>
+		    			<span>Time per round (seconds): <input ng-model="newRoom.roundTime" type='number' min='30' max='120' /></span>
+		    			<span><button type='submit' class='btn btn-success'>Create Room</button></span>
+		    		</form>
+		    	</div>
+
+
+		    	<div class='roomDetails' ng-hide='createLobby'>
+    				<span>Name: {{selectedRoom.name}}</span>
+	    			<span>Max Players: {{selectedRoom.maxPlayers}}</span>
+	    			<span>Wordlist: {{selectedRoom.wordlist.title}}</span>
+	    			<span>Number of rounds: {{selectedRoom.numRounds}}</span>
+	    			<span>Time per round (seconds): {{selectedRoom.roundTime}}</span>
+	    			<span><button ng-click='goToRoom(selectedRoom)' class='btn btn-success'>Go To {{selectedRoom.name}}</button></span>
+		    	</div>
+		    </div>
+	    </div>
+	</div>
 </section>
+
