@@ -1,9 +1,10 @@
 navbar {
 
   display: block;
-  background: white;
-  border-bottom: 1px solid black;
-  box-shadow: 1px 1px 14px -3px black;
+  background: #e9eee9;
+  margin: 0;
+  // border-bottom: 1px solid black;
+  // box-shadow: 1px 1px 14px -3px black;
 
   .container {
     width: 91%;
@@ -57,6 +58,19 @@ navbar {
       color: #f30046;
       cursor: pointer;
     }
+  }
+
+  #welcome {
+    font-family: 'Poiret One';
+    font-weight: bold;
+    font-size: 40px;
+    // text-align: center;
+    transform: translateY(-40%) translateX(17%);
+    z-index:-999999999;
+  }
+
+  #lobby {
+    z-index: 999999999999999999;
   }
 
 }

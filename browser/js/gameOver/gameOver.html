@@ -1,0 +1,15 @@
+<div class='container anim-slide-right'>
+	<h1>{{winner.name}} wins!</h1>
+	<div class='row'>
+		<div id='scoreboard' class='col-sm-6'>
+			<h3 ng-repeat='player in players'><span class='pull-left'><strong>{{player.name}}</strong></span><span class='pull-right'>{{player.points}}</span><br /></h3>
+		</div>
+		<div class='col-sm-6'>
+			<h2><strong>AWARDS</strong></h2>
+			<h2>Most Wrong Guesses: <strong>{{wrongGuesser.name}}</strong> with {{wrongGuesser.wrongGuesses}} wrong guesses</h2>
+			<h2>Craziest Guess:<strong>{{craziestGuesser}}</strong> with <strong>{{craziestGuess}}</strong></h2>
+			<h2>Participation Award: <strong>{{consolation.name}}</strong></h2>
+		</div>
+		<button class='btn btn-info' ng-click='goToLobby()'>RETURN TO LOBBY</button>
+	</div>
+</div>

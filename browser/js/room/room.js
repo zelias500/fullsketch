@@ -6,34 +6,38 @@ app.config(function ($stateProvider){
 	})
 })
 
-app.controller('roomCtrl', function($scope, Socket, $stateParams, $rootScope){
+app.controller('roomCtrl', function($scope, Socket, $stateParams, $rootScope, $state){
 	$scope.roomData = {};
 	Socket.emit('join room', $stateParams.roomName);
 	Socket.on('room data', function(roomData){
-		roomData.players = roomData.players.map(function(player){
-			return {name: player, points:0};
-		})
+		$scope.players = roomData.players;
 		$scope.roomData = roomData;
+		$scope.guesses = roomData.guesses;
 		$scope.$digest();
 	})
 	$scope.roomName = $stateParams.roomName;
 	$scope.guesses = [];
 	$scope.makeGuess = function(guess){
-		// $scope.guesses.push(guess);
-		Socket.emit('guess', {roomName: $stateParams.roomName, guess: guess});
-		$scope.theGuess = '';
+		// can only guess if you aren't drawing
+		if (!$rootScope.canIDraw){
+			// $scope.guesses.push(guess);
+			Socket.emit('guess', {roomName: $stateParams.roomName, guess: guess, guesser:$rootScope.username});
+			$scope.theGuess = '';			
+		}
 	}
 
 	// COLORS
-	$scope.colorList = ['#ff0000', '#00ffe7', '#ff6f00', '#0400ff', '#f5ff00', '#fff', '#000'];
-	$scope.currentColor;
+	$scope.colorList = ['#ff0000', '#00ffe7', '#ff6f00', '#0400ff', '#f5ff00', '#fff'];
+	$scope.currentColor = '#ff0000';
 	$scope.setColor = function(color){
 		$scope.currentColor = color;
 	}
 	// CLEAR CANVAS
 	$scope.clearCanvas = function() {
-		Socket.emit('clear canvas', {roomName: $stateParams.roomName});
-		// $scope.canvasVersion = 0;
+		// only works if it's your turn
+		if ($rootScope.canIDraw){
+			Socket.emit('clear canvas', {roomName: $stateParams.roomName});
+		}
 	}
 	Socket.on('clear canvas', function() {
 		$rootScope.$broadcast('clear canvas');
@@ -55,10 +59,21 @@ app.controller('roomCtrl', function($scope, Socket, $stateParams, $rootScope){
 		$scope.$digest();
 	})
 
-	//	game logic?
+	$rootScope.drawChecker = function(){
+		// console.log($scope.currentDrawer);
+		if (!$scope.currentDrawer) return;
+		return $scope.currentDrawer.name == $rootScope.username;
+	}
+
+	//	game logic -- comply with server clock
 	Socket.on('tick', function(roomData){
+		// console.log(roomData);
+
+		$scope.players = roomData.players;
 		$scope.currentWord = roomData.currentWord;
-		$scope.currentGuesser = roomData.currentGuesser;
+		$scope.currentDrawer = roomData.currentDrawer;
+		
+		// console.log('can they draw??', $rootScope.canIDraw);
 		if (roomData.currentGame){
 			$scope.timer = roomData.timer;
 			$scope.timeState = 'Time remaining: ';
@@ -67,10 +82,17 @@ app.controller('roomCtrl', function($scope, Socket, $stateParams, $rootScope){
 		else {
 			$scope.timer = roomData.betweenTimer;
 			$scope.timeState = 'Next round in: ';
-			$scope.wordState = 'Next word is: ';
+			$scope.wordState = 'Your word is: ';
 		}
 
 		$scope.$digest();
+		$rootScope.canIDraw = $rootScope.drawChecker();
+	})
+
+	Socket.on('game over', function(roomData){
+		console.log("GAME OVER MAN")
+		$rootScope.lastGameData = roomData;
+		$state.go('gameOver', {roomName: $stateParams.roomName})
 	})
 
 })

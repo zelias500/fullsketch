@@ -1,15 +1,28 @@
 <div class="anim-fade">
     <div class='container'>
+        <div class='row'>
+            <div class='col-sm-2 centerTheText'>
+                <h2>Players</h2>
+            </div>
+            <div class='col-sm-8 centerTheText'>
+                <h2 ng-show='currentDrawer.name == username'>{{wordState}}{{currentWord}}</h2>
+                <h2 ng-hide='currentDrawer.name == username'>{{currentDrawer.name}} is currently drawing</h2>
+            </div>
+            <div class='col-sm-2 centerTheText'>
+                <h2>Guesses</h2>
+            </div>
+        </div>
         <div class='row wrapper' scroll-glue>
             <div id='roomInfo' class='col-sm-2 roomBox'>
-                <p ng-repeat='player in roomData.players'><span>{{player.name}}</span><span class='pull-right'>{{player.points}}</span></p>
+                <p ng-class="{'active': currentDrawer.name == player.name}" ng-repeat='player in players'><span>{{player.name}}</span><span class='pull-right'>{{player.points}}</span></p>
             </div>
 
-            <div id='gameArea' class='col-sm-8 roomBox'>
-                <div pw-canvas options='{width: 780, height: 361, color:currentColor, undo:true}' version="canvasVersion"></div>
+            <div id='gameArea' class='col-sm-8'>
+                <div pw-canvas options='{width: 779, height: 361, color:currentColor, backgroundColor:"#FCFBE3", undo:true}' version="canvasVersion"></div>
                 <div id='gameButtons' class='row'>
-                    <span class='col-sm-2'>{{wordState}}{{currentWord}}</span>
-                    <div class='col-sm-7'>
+                    <!-- <span ng-show='currentDrawer.name == username' class='col-sm-2'>{{wordState}}{{currentWord}}</span>
+                    <span ng-hide='currentDrawer.name == username' class='col-sm-2'>{{currentDrawer.name}} is currently drawing</span> -->
+                    <div class='col-sm-6'>
                         <ul class="pwColorSelector">
                             <li ng-repeat="color in colorList track by $index"
                                 class="pwColor"
@@ -19,19 +32,25 @@
                         </ul>
                         <button class='btn btn-danger' ng-click='clearCanvas()'>CLEAR</button>
                     </div>
-                    <span class='col-sm-3'>{{timeState}}{{timer}}</span>
+                    <h3 id='timeState' class='col-sm-4'>{{timeState}}</h3>
+                    <div class='col-sm-1' id='circleTimer'>
+                        <div round-progress current='timer' color='#45ccce' radius='40' semi='true'></div>
+                    </div>
+                    <span id='numberTimer' class='col-sm-1'><strong>{{timer}}s</strong></span>
+                    <!-- <h3 class='col-sm-3'>{{timeState}}{{timer}}</h3> -->
                 </div>
             </div>
 
             <div id='guessArea' class='col-sm-2 roomBox' scroll-glue>
-                <p ng-repeat='guess in guesses track by $index'>{{guess}}</p>
+                <p ng-repeat='guess in guesses track by $index'>{{guess.guesser}}: {{guess.guess}}</p>
                 <div id='guessHere'>
                     <form name='guessBox' ng-submit='makeGuess(theGuess)'>
                         <input class='form-control' type='text' ng-model='theGuess' />
-                        <button class='btn btn-success' type='submit'>SUBMIT GUESS</button>
+                        <button class='btn btn-success createBtn' type='submit'>SUBMIT GUESS</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+

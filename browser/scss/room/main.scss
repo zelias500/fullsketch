@@ -9,6 +9,8 @@
 
 #gameArea {
 	padding: 0px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
 }
 
 #guessArea {
@@ -31,6 +33,9 @@
 .wrapper {
 	height:427px;
 	position:relative;
+	background-color: #FCFBE3;
+	box-shadow: 13px 10px 5px 0px rgba(207,206,245,1);
+	font-weight: 900;
 }
 
 #gameButtons {
@@ -64,17 +69,24 @@
 	transform: translateY(-30%);
 }
 
-.active {
-	border: 3px solid green;
+#circleTimer {
+	transform: translateX(-35%) translateY(20%);
 }
 
-// .col-sm-3 {
-// 	padding: 0;	
-// }
-// .col-sm-2 {
-// 	padding:0;
-// }
+#timeState {
+	transform: translateY(-14%);
+	font-weight: 900;
+}
 
-// .col-sm-7 {
-// 	padding: 0;
-// }
+#numberTimer {
+	transform: translateY(100%);
+	font-weight: 900;
+}
+
+.centerTheText {
+	text-align: center;
+}
+
+.centerTheText h2 {
+	font-weight: 900;
+}

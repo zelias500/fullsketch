@@ -3,5 +3,5 @@
 		Enter a Username: <input type='text' ng-minlength="3" ng-model='username' />
 		<button class="btn btn-info" type='submit'>Submit Username</button>
 	</form>
-	<h3 ng-show="username.length<4 && nameForm.$dirty">Username must be at least 3 characters!</h3>
+	<h3 ng-show="username.length<3 && nameForm.$dirty">Username must be at least 3 characters!</h3>
 </div>

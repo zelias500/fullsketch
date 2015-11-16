@@ -1,9 +1,11 @@
 * {
   box-sizing: border-box;
+  font-family: 'Poiret One';
+  font-weight: bolder;
 }
 
 body {
-  background: #fdfdfd;
+  background: #e9eee9;
 }
 
 @mixin clearfix {

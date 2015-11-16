@@ -14,18 +14,22 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('lobbyCtrl', function($scope, $state, Socket, wordlists, $uibModal, $rootScope){
-	var modalInstance = $uibModal.open({
-		animation: true,
-		templateUrl: 'js/home/username.html',
-		controller: 'modalCtrl',
-		backdrop: 'static'
-	})
-	modalInstance.result.then(function(username){
-		$rootScope.username = username;
-		Socket.emit('new user', username);
-	})		
+
+	if (!$rootScope.username){
+		var modalInstance = $uibModal.open({
+			animation: true,
+			templateUrl: 'js/home/username.html',
+			controller: 'modalCtrl',
+			backdrop: 'static'
+		})
+		modalInstance.result.then(function(username){
+			$rootScope.username = username;
+			Socket.emit('new user', username);
+		})				
+	}
 
 	$scope.wordlists = wordlists;
+	Socket.emit('give me the rooms');
 
 	Socket.on('here are some rooms', function(rooms){
 		$scope.rooms = rooms
@@ -33,6 +37,7 @@ app.controller('lobbyCtrl', function($scope, $state, Socket, wordlists, $uibModa
 	})
 
 	$scope.showRoomDetails = function(room) {
+		$scope.createLobby = false;
 		$scope.selectedRoom = room;
 	}
 
@@ -41,23 +46,15 @@ app.controller('lobbyCtrl', function($scope, $state, Socket, wordlists, $uibModa
 	}
 
 	$scope.createRoom = function() {
-		$scope.createLobby = false;
 		Socket.emit('create new room', $scope.newRoom);
 		$state.go('room', {roomName: $scope.newRoom.name});
 	}
-
-	Socket.on('tick', function(data){
-		// console.log('tick', data.timer);
-		$scope.timeKeeper--;
-		$scope.$digest();
-	})
-
 
 })
 
 app.controller('modalCtrl', function($scope, $uibModalInstance){
 	$scope.submitUsername = function(){
-		if ($scope.username.length > 3){
+		if ($scope.username.length > 2){
 			$uibModalInstance.close($scope.username);
 		}
 	}
