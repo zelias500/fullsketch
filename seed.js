@@ -49,6 +49,11 @@ connectToDb.then(function () {
             words: ['javascript', 'callback', 'node', 'promises', 'angular', '$scope', 'for-loop', 'recursion' ],
             difficulty: 10
         }).then(function(){
+            return Wordlist.create({
+                title: 'food',
+                words: ['chocolate', 'pizza', 'sushi', 'coffee', 'beer', 'Roti', 'sausage', 'hamburger'],
+                difficulty: 5
+            }).then(function(){
                 User.findAsync({}).then(function (users) {
                     if (users.length === 0) {
                         return seedUsers();
@@ -66,6 +71,6 @@ connectToDb.then(function () {
                 });
             })  
         })
-
+    })
 
 });
